@@ -31,11 +31,11 @@ export default {
       let matched = this.$route.matched.filter(item => {
         if (item.name) {
           return true
-        }
+        } 
       })
       const first = matched[0]
-      if (first && first.name !== 'dashboard') {
-        matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
+      if (first && first.name !== 'home') {
+        matched = [{ path: '/home', meta: { title: '语音服务综合管理平台系统' }}].concat(matched)
       }
       this.levelList = matched
     },

@@ -25,18 +25,74 @@ export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   name: 'Dashboard',
+  //   hidden: true,
+  //   children: [{
+  //     path: 'dashboard',
+  //     component: () => import('@/views/dashboard/index')
+  //   }]
+  // },
   {
-    path: '/',
+    path: '/home',
     component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
-    }]
+    children: [
+      {
+        path: 'index',
+        name: 'Home',
+        component: () => import('@/views/home/index'),
+        meta: { title: '首页', icon: 'home' }
+      }
+    ]
   },
-
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
+  {
+    path: '/company',
+    component: Layout,
+    redirect: '/company/info',
+    name: 'Company',
+    meta: { title: '企业客户', icon: 'company' },
+    children: [
+      {
+        path: 'info',
+        name: 'Info',
+        component: () => import('@/views/info/index'),
+        meta: { title: '客户信息', icon: 'info' }
+      },
+      {
+        path: 'auth_code',
+        name: 'AuthCode',
+        component: () => import('@/views/auth_code/index'),
+        meta: { title: '语音验证码', icon: 'auth_code' }
+      },
+      {
+        path: 'notification',
+        name: 'Notification',
+        component: () => import('@/views/notification/index'),
+        meta: { title: '语音通知', icon: 'notification' }
+      },
+      {
+        path: 'call',
+        name: 'Call',
+        component: () => import('@/views/call/index'),
+        meta: { title: '语音通话', icon: 'call' }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
@@ -59,18 +115,6 @@ export const constantRouterMap = [
     ]
   },
 
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
 
   {
     path: '/nested',
@@ -87,40 +131,40 @@ export const constantRouterMap = [
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        // children: [
+        //   {
+        //     path: 'menu1-1',
+        //     component: () => import('@/views/nested/menu1/menu1-1'),
+        //     name: 'Menu1-1',
+        //     meta: { title: 'Menu1-1' }
+        //   },
+          // {
+          //   path: 'menu1-2',
+          //   component: () => import('@/views/nested/menu1/menu1-2'),
+          //   name: 'Menu1-2',
+          //   meta: { title: 'Menu1-2' },
+          //   children: [
+          //     {
+          //       path: 'menu1-2-1',
+          //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+          //       name: 'Menu1-2-1',
+          //       meta: { title: 'Menu1-2-1' }
+          //     },
+          //     {
+          //       path: 'menu1-2-2',
+          //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+          //       name: 'Menu1-2-2',
+          //       meta: { title: 'Menu1-2-2' }
+          //     }
+          //   ]
+          // },
+          // {
+          //   path: 'menu1-3',
+          //   component: () => import('@/views/nested/menu1/menu1-3'),
+          //   name: 'Menu1-3',
+          //   meta: { title: 'Menu1-3' }
+          // }
+        // ]
       },
       {
         path: 'menu2',
@@ -130,16 +174,16 @@ export const constantRouterMap = [
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
