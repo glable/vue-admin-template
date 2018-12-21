@@ -25,17 +25,11 @@ export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
-  // {
-  //   path: '/',
-  //   component: Layout,
-  //   redirect: '/dashboard',
-  //   name: 'Dashboard',
-  //   hidden: true,
-  //   children: [{
-  //     path: 'dashboard',
-  //     component: () => import('@/views/dashboard/index')
-  //   }]
-  // },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/home'
+  },
   {
     path: '/home',
     component: Layout,
@@ -48,18 +42,6 @@ export const constantRouterMap = [
       }
     ]
   },
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
   {
     path: '/company',
     component: Layout,
@@ -114,8 +96,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
-
   {
     path: '/nested',
     component: Layout,
@@ -130,7 +110,7 @@ export const constantRouterMap = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'Menu1' },
+        meta: { title: 'Menu1' }
         // children: [
         //   {
         //     path: 'menu1-1',
@@ -138,32 +118,32 @@ export const constantRouterMap = [
         //     name: 'Menu1-1',
         //     meta: { title: 'Menu1-1' }
         //   },
-          // {
-          //   path: 'menu1-2',
-          //   component: () => import('@/views/nested/menu1/menu1-2'),
-          //   name: 'Menu1-2',
-          //   meta: { title: 'Menu1-2' },
-          //   children: [
-          //     {
-          //       path: 'menu1-2-1',
-          //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-          //       name: 'Menu1-2-1',
-          //       meta: { title: 'Menu1-2-1' }
-          //     },
-          //     {
-          //       path: 'menu1-2-2',
-          //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-          //       name: 'Menu1-2-2',
-          //       meta: { title: 'Menu1-2-2' }
-          //     }
-          //   ]
-          // },
-          // {
-          //   path: 'menu1-3',
-          //   component: () => import('@/views/nested/menu1/menu1-3'),
-          //   name: 'Menu1-3',
-          //   meta: { title: 'Menu1-3' }
-          // }
+        // {
+        //   path: 'menu1-2',
+        //   component: () => import('@/views/nested/menu1/menu1-2'),
+        //   name: 'Menu1-2',
+        //   meta: { title: 'Menu1-2' },
+        //   children: [
+        //     {
+        //       path: 'menu1-2-1',
+        //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+        //       name: 'Menu1-2-1',
+        //       meta: { title: 'Menu1-2-1' }
+        //     },
+        //     {
+        //       path: 'menu1-2-2',
+        //       component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+        //       name: 'Menu1-2-2',
+        //       meta: { title: 'Menu1-2-2' }
+        //     }
+        //   ]
+        // },
+        // {
+        //   path: 'menu1-3',
+        //   component: () => import('@/views/nested/menu1/menu1-3'),
+        //   name: 'Menu1-3',
+        //   meta: { title: 'Menu1-3' }
+        // }
         // ]
       },
       {

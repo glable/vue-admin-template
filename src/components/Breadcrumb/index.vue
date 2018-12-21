@@ -31,7 +31,7 @@ export default {
       let matched = this.$route.matched.filter(item => {
         if (item.name) {
           return true
-        } 
+        }
       })
       const first = matched[0]
       if (first && first.name !== 'home') {
