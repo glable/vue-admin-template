@@ -96,7 +96,6 @@
 <script>
 import { fetchList } from '@/api/report'
 import { parseTime } from '@/utils/index'
-
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 const lxOptions = [
