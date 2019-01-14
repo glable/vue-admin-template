@@ -6,44 +6,37 @@
       element-loading-text="Loading"
       border
       fit
-      highlight-current-row>
-      <el-table-column align="center" label="ID" width="95">
+      highlight-current-row
+    >
+      <el-table-column align="center" label="主账户名称">
+        <template slot-scope="scope">{{ scope.row.friendlyName }}</template>
+      </el-table-column>
+      <el-table-column label="主账户类型" width="95" align="center">
+        <template slot-scope="scope">{{ scope.row.type ==0 ?"试用":"已注册" }}</template>
+      </el-table-column>
+      <el-table-column label="主账户状态" width="110" align="center">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          <span v-if="scope.row.status === 1">激活</span>
+          <span v-else-if="scope.row.status === 2">暂停</span>
+          <span v-else-if="scope.row.status === 3">关闭</span>
+          <span v-else>未激活</span>
         </template>
       </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
+      <el-table-column label="主账户余额" width="160" align="center">
+        <template slot-scope="scope">{{ scope.row.balance }}</template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
+      <el-table-column label="创建时间" width="160" align="center">
+        <template slot-scope="scope">{{ scope.row.dateCreated }}</template>
       </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time"/>
-          <span>{{ scope.row.display_time }}</span>
-        </template>
+      <el-table-column label="更新时间" width="160" align="center">
+        <template slot-scope="scope">{{ scope.row.dateUpdated }}</template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getList } from '@/api/account'
 
 export default {
   filters: {
@@ -69,7 +62,7 @@ export default {
     fetchData() {
       this.listLoading = true
       getList(this.listQuery).then(response => {
-        this.list = response.data.items
+        this.list = response.data
         this.listLoading = false
       })
     }

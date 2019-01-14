@@ -44,54 +44,75 @@ export const constantRouterMap = [
   {
     path: '/company',
     component: Layout,
-    redirect: '/company/info',
-    name: 'Company',
-    meta: { title: '企业客户', icon: 'company' },
     children: [
       {
         path: 'info',
         name: 'Info',
         component: () => import('@/views/info/index'),
         meta: { title: '客户信息', icon: 'info' }
-      },
-      {
-        path: 'auth_code',
-        name: 'AuthCode',
-        component: () => import('@/views/auth_code/index'),
-        meta: { title: '语音验证码', icon: 'auth_code' }
-      },
-      {
-        path: 'notification',
-        name: 'Notification',
-        component: () => import('@/views/notification/index'),
-        meta: { title: '语音通知', icon: 'notification' }
-      },
-      {
-        path: 'call',
-        name: 'Call',
-        component: () => import('@/views/call/index'),
-        meta: { title: '语音通话', icon: 'call' }
       }
     ]
   },
   {
-    path: '/example',
+    path: '/voice',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/voice/manager',
+    name: 'Voice',
+    meta: { title: '语音管理', icon: 'company' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'manager',
+        name: 'Manager',
+        component: () => import('@/views/voice/manager'),
+        meta: { title: '语音通知', icon: 'notification' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'upload',
+        name: 'Upload',
+        component: () => import('@/views/voice/upload'),
+        meta: { title: '录音文件上传', icon: 'upload' }
+      }
+    ]
+  },
+  {
+    path: '/detail',
+    component: Layout,
+    redirect: '/detail/yzm',
+    name: 'Detail',
+    meta: { title: '明细查询', icon: 'example' },
+    children: [
+      {
+        path: 'yzm',
+        name: 'yzm',
+        component: () => import('@/views/detail/yzm'),
+        meta: { title: '语音验证码话单', icon: 'auth_code' }
+      },
+      {
+        path: 'tz',
+        name: 'tz',
+        component: () => import('@/views/detail/tz'),
+        meta: { title: '语音通知话单', icon: 'notification' }
+      }
+    ]
+  },
+  {
+    path: '/report',
+    component: Layout,
+    redirect: '/report/yzm',
+    name: 'Report',
+    meta: { title: '统计报表', icon: 'report' },
+    children: [
+      {
+        path: 'yzm',
+        name: 'Yzm',
+        component: () => import('@/views/report/yzm'),
+        meta: { title: '验证码统计报表', icon: 'auth_code' }
+      },
+      {
+        path: 'tz',
+        name: 'Tz',
+        component: () => import('@/views/report/tz'),
+        meta: { title: '通话统计报表', icon: 'notification' }
       }
     ]
   },
