@@ -210,7 +210,9 @@ export default {
       this.getList()
     },
     handleDownload() {
-      window.open(process.env.BASE_API + '/bill/excel?caller=' + this.listQuery.caller + '&called=' + this.listQuery.called, '_blank')
+      window.open(process.env.BASE_API + '/bill/excel?caller=' + this.listQuery.caller + '&called=' + this.listQuery.called +
+        '&endTime=' + this.listQuery.endTime + '&durationConditon=' + this.listQuery.durationConditon +
+        '&startTime=' + this.listQuery.startTime + '&calltype=' + this.listQuery.calltype, '_blank')
     }
   }
 }

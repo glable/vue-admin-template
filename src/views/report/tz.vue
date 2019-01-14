@@ -1,35 +1,16 @@
 <template>
   <div class="app-container">
     <div class="filter-container" style="margin-bottom:5px;">
-      <span>主叫号码:</span>
-      <el-input
-        v-model="listQuery.caller"
-        style="width: 150px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <span>拨打号码:</span>
-      <el-input
-        v-model="listQuery.called"
-        style="width: 150px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <span>呼叫时长:</span>
-      <el-select
-        v-model="listQuery.durationConditon"
-        clearable
-        class="filter-item"
-        style="width: 130px"
-      >
+      <span>报表类型:</span>
+      <el-select v-model="listQuery.tjlx" clearable class="filter-item" style="width: 130px">
         <el-option
-          v-for="item in durationOptions"
+          v-for="item in lxOptions"
           :key="item.key"
           :label="item.display_name"
           :value="item.key"
         />
       </el-select>
-      <span>呼叫时间:</span>
+      <span>报表日期:</span>
       <el-date-picker
         v-model="listQuery.startTime"
         :picker-options="pickerOptions0"
@@ -75,39 +56,29 @@
           <span>{{ scope.$index+1 + (listQuery.pageNum-1)*listQuery.pageSize }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="报表日期" width="120">
+        <template slot-scope="scope">
+          <span>{{ scope.row.tjrq }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="客户名称">
         <template slot-scope="scope">
           <span>{{ '南京乾璟通网络科技有限公司' }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="180px" align="center" label="主叫号码">
+      <el-table-column width="180px" align="center" label="总数量">
         <template slot-scope="scope">
-          <span>{{ scope.row.caller }}</span>
+          <span>{{ scope.row.zsl }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="180px" align="center" label="拨打号码">
+      <el-table-column width="180px" align="center" label="应答量">
         <template slot-scope="scope">
-          <span>{{ scope.row.called }}</span>
+          <span>{{ scope.row.ydl }}</span>
         </template>
       </el-table-column>
-      <el-table-column width="180px" align="center" label="呼叫时间">
+      <el-table-column width="180px" align="center" label="合计费用（元）">
         <template slot-scope="scope">
-          <span>{{ scope.row.calltime }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column width="120px" align="center" label="呼叫时长">
-        <template slot-scope="scope">
-          <span>{{ scope.row.duration }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column width="120px" align="center" label="呼叫结果">
-        <template slot-scope="scope">
-          <span>{{ '正常挂机' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column width="120px" align="center" label="计费(元)">
-        <template slot-scope="scope">
-          <span>{{ scope.row.cost }}</span>
+          <span>{{ scope.row.zfy }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -123,20 +94,17 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/bill'
+import { fetchList } from '@/api/report'
 import { parseTime } from '@/utils/index'
 
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
-const durationOptions = [
-  { key: 'is not null ', display_name: '全部' },
-  { key: '=0 ', display_name: '等于0' },
-  { key: ' between 0 and 10 ', display_name: '0s到10s' },
-  { key: ' between 11 and 30 ', display_name: '11s到30s' },
-  { key: ' >30 ', display_name: '大于30s' }
+const lxOptions = [
+  { key: '1', display_name: '日报' },
+  { key: '2', display_name: '月报' }
 ]
 export default {
-  name: 'BillList',
+  name: 'ReportYzmList',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -151,7 +119,7 @@ export default {
   data() {
     return {
       list: null,
-      durationOptions,
+      lxOptions,
       total: 0,
       listLoading: true,
       downLoading: false,
@@ -210,7 +178,9 @@ export default {
       this.getList()
     },
     handleDownload() {
-      window.open(process.env.BASE_API + '/bill/excel?caller=' + this.listQuery.caller + '&called=' + this.listQuery.called, '_blank')
+      window.open(process.env.BASE_API + '/bill/report?calltype=' + this.listQuery.calltype +
+        '&endTime=' + this.listQuery.endTime +
+        '&startTime=' + this.listQuery.startTime, '_blank')
     }
   }
 }

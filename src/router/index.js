@@ -61,10 +61,16 @@ export const constantRouterMap = [
     meta: { title: '语音管理', icon: 'company' },
     children: [
       {
-        path: 'manager',
-        name: 'Manager',
-        component: () => import('@/views/voice/manager'),
-        meta: { title: '语音通知', icon: 'notification' }
+        path: 'sendYzm',
+        name: 'SendYzm',
+        component: () => import('@/views/voice/sendYzm'),
+        meta: { title: '验证码发送', icon: 'notification' }
+      },
+      {
+        path: 'sendTz',
+        name: 'SendTz',
+        component: () => import('@/views/voice/sendTz'),
+        meta: { title: '语音通知发送', icon: 'notification' }
       },
       {
         path: 'upload',

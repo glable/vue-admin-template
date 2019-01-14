@@ -2,9 +2,8 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/bill/queryList',
+    url: '/bill/reportList',
     method: 'get',
     params: query
   })
 }
-
