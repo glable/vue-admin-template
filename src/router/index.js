@@ -64,13 +64,13 @@ export const constantRouterMap = [
         path: 'sendYzm',
         name: 'SendYzm',
         component: () => import('@/views/voice/sendYzm'),
-        meta: { title: '验证码发送', icon: 'notification' }
+        meta: { title: '验证码发送', icon: 'yzmSend' }
       },
       {
         path: 'sendTz',
         name: 'SendTz',
         component: () => import('@/views/voice/sendTz'),
-        meta: { title: '语音通知发送', icon: 'notification' }
+        meta: { title: '语音通知发送', icon: 'tzSend' }
       },
       {
         path: 'upload',

@@ -1,52 +1,17 @@
 <template>
   <div class="app-container">
-    首页
-    <!--
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name"/>
-      </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai"/>
-          <el-option label="Zone two" value="beijing"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;"/>
-        </el-col>
-        <el-col :span="2" class="line">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;"/>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery"/>
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type"/>
-          <el-checkbox label="Promotion activities" name="type"/>
-          <el-checkbox label="Offline activities" name="type"/>
-          <el-checkbox label="Simple brand exposure" name="type"/>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor"/>
-          <el-radio label="Venue"/>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea"/>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
-      </el-form-item>
-    </el-form>
-    -->
+    <el-upload
+      ref="upload"
+      :on-remove="handleRemove"
+      :auto-upload="false"
+      :action="doUpload"
+      :on-change="beforeAvatarUpload"
+      :on-success="onSuccess"
+    >
+      <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+      <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传wav或zip（将多个语音文件打包）文件，且不超过20M</div>
+    </el-upload>
   </div>
 </template>
 
@@ -54,6 +19,10 @@
 export default {
   data() {
     return {
+      doUpload: process.env.BASE_API + '/upload/singlefile',
+      pppss: {
+        srid: ''
+      },
       form: {
         name: '',
         region: '',
@@ -67,21 +36,33 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      this.$message('submit!')
+    submitUpload() {
+      this.$refs.upload.submit()
     },
-    onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.raw.type === 'audio/wav' || file.raw.type === 'application/x-zip-compressed'
+      const isLt2M = file.size / 1024 / 1024 < 20
+      if (!isJPG) {
+        this.$message.error('上传语音文件只能是wav/zip格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传语音文件大小不能超过20MB!')
+      }
+      return isJPG && isLt2M
+    },
+    onSuccess(response, file, fileList) {
+      console.log(response)
+      this.$message.info(response)
     }
   }
 }
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
 }
 </style>

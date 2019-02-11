@@ -1,52 +1,23 @@
 <template>
   <div class="app-container">
-    首页
-    <!--
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name"/>
+    <el-form
+      ref="ruleForm"
+      label-width="100px"
+      class="demo-ruleForm"
+      :model="ruleForm"
+      :rules="rules"
+    >
+      <el-form-item label="验证码" prop="yzm">
+        <el-input v-model="ruleForm.yzm"/>
       </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai"/>
-          <el-option label="Zone two" value="beijing"/>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;"/>
-        </el-col>
-        <el-col :span="2" class="line">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;"/>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery"/>
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type"/>
-          <el-checkbox label="Promotion activities" name="type"/>
-          <el-checkbox label="Offline activities" name="type"/>
-          <el-checkbox label="Simple brand exposure" name="type"/>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor"/>
-          <el-radio label="Venue"/>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea"/>
+      <el-form-item label="接收号码" prop="numbers">
+        <el-input type="textarea" v-model="ruleForm.numbers"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">发送</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
-    -->
   </div>
 </template>
 
@@ -54,35 +25,35 @@
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+      ruleForm: {
+        yzm: '',
+        numbers: ''
+      },
+      rules: {
+        yzm: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { min: 4, max: 10, message: '长度在 4 到 10 个字符', trigger: 'blur' }
+        ],
+        numbers: [
+          { required: true, message: '请填写接收号码', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
-    onSubmit() {
-      this.$message('submit!')
-    },
-    onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
 </script>
-
-<style scoped>
-.line{
-  text-align: center;
-}
-</style>
-
