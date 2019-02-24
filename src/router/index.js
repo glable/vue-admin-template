@@ -42,6 +42,32 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/views/user/add'),
+        name: 'AddUser',
+        meta: { title: '新增用户', icon: 'edit', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'edit/:username(\\d+)',
+        component: () => import('@/views/user/edit'),
+        name: 'EditUser',
+        meta: { title: '编辑用户', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'user',
+        name: 'user',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'user', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/company',
     component: Layout,
     children: [

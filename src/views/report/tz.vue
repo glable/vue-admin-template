@@ -62,9 +62,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="客户名称">
-        <template slot-scope="scope">
-          <span>{{ '南京乾璟通网络科技有限公司' }}</span>
-        </template>
+        <span>{{ '南京乾璟通网络科技有限公司' }}</span>
       </el-table-column>
       <el-table-column width="180px" align="center" label="总数量">
         <template slot-scope="scope">

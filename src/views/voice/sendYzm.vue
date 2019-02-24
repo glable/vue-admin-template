@@ -2,16 +2,16 @@
   <div class="app-container">
     <el-form
       ref="ruleForm"
-      label-width="100px"
-      class="demo-ruleForm"
       :model="ruleForm"
       :rules="rules"
+      label-width="100px"
+      class="demo-ruleForm"
     >
       <el-form-item label="验证码" prop="yzm">
         <el-input v-model="ruleForm.yzm"/>
       </el-form-item>
       <el-form-item label="接收号码" prop="numbers">
-        <el-input type="textarea" v-model="ruleForm.numbers"></el-input>
+        <el-input v-model="ruleForm.numbers" type="textarea" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">发送</el-button>
