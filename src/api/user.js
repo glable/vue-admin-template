@@ -10,9 +10,16 @@ export function fetchList(query) {
 
 export function addUser(query) {
   return request({
-    url: '/user/addUser',
+    url: '/user/saveUser',
     method: 'post',
     params: query
+  })
+}
+
+export function getUser(username) {
+  return request({
+    url: '/user/getUser/' + username + '/',
+    method: 'get'
   })
 }
 
@@ -24,10 +31,9 @@ export function editUser(query) {
   })
 }
 
-export function deleteUser(query) {
+export function deleteUser(username) {
   return request({
-    url: '/user/deleteUser',
-    method: 'post',
-    params: query
+    url: '/user/deleteUser/' + username,
+    method: 'delete'
   })
 }

@@ -1,37 +1,52 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
-      <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">保存
-      </el-button>
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
-            <el-form-item label="验证码" prop="yzm">
-              <el-input v-model="postForm.yzm"/>
+            <el-form-item label="用户名(必填项)" prop="username">
+              <el-input v-model="postForm.username"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="密码(必填项)" prop="password">
+              <el-input v-model="postForm.password"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="验证码应用ID(必填项)" prop="yzmid">
+              <el-input v-model="postForm.yzmid"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="话单通知应用ID(必填项)" prop="hdid">
+              <el-input v-model="postForm.hdid"/>
             </el-form-item>
           </el-col>
         </el-row>
       </div>
+      <el-button
+        v-loading="loading"
+        style="margin-left: 10px;float:right;margin-right:200px;"
+        type="success"
+        @click="submitForm"
+      >保存</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validateURL } from '@/utils/validate'
-// import { fetchArticle } from '@/api/user'
+import { getUser } from '@/api/user'
+import { addUser } from '@/api/user'
+import { deleteUser } from '@/api/user'
+import { editUser } from '@/api/user'
 
 const defaultForm = {
-  status: 'draft',
-  title: '', // 文章题目
-  content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  username: '',
+  password: '',
+  hdid: '',
+  yzmid: ''
 }
 
 export default {
@@ -54,17 +69,12 @@ export default {
         callback()
       }
     }
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validateURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          })
-          callback(new Error('外链url填写不正确'))
-        }
+    const validatePass = (rule, value, callback) => {
+      if (value.length < 5) {
+        this.$message({
+          message:'密码不能小于5位',
+          type: 'error'
+        })
       } else {
         callback()
       }
@@ -74,10 +84,10 @@ export default {
       loading: false,
       userListOptions: [],
       rules: {
-        image_uri: [{ validator: validateRequire }],
-        title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        username: [{ validator: validateRequire }],
+        password: [{ validator: validateRequire, validatePass }],
+        hdid: [{ validator: validateRequire }],
+        yzmid: [{ validator: validateRequire }]
       },
       tempRoute: {}
     }
@@ -92,10 +102,12 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+      const username = this.$route.params && this.$route.params.username
+      this.fetchData(username)
+      this.postForm.isEdit = true
     } else {
       this.postForm = Object.assign({}, defaultForm)
+      this.postForm.isEdit = false
     }
 
     // Why need to make a copy of this.$route here?
@@ -104,38 +116,52 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
-    fetchData(id) {
-      // fetchArticle(id).then(response => {
-      //   this.postForm = response.data
-      //   // Just for test
-      //   this.postForm.title += `   Article Id:${this.postForm.id}`
-      //   this.postForm.content_short += `   Article Id:${this.postForm.id}`
-
-      //   // Set tagsview title
-      //   this.setTagsViewTitle()
-      // }).catch(err => {
-      //   console.log(err)
-      // })
+    fetchData(username) {
+      getUser(username).then(response => {
+        this.postForm = response.data
+        // Set tagsview title
+        this.setTagsViewTitle()
+      }).catch(err => {
+        console.log(err)
+      })
     },
     setTagsViewTitle() {
-      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      const title = this.lang === 'zh' ? '编辑用户' : 'Edit User'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.username}` })
       this.$store.dispatch('updateVisitedView', route)
     },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
-      console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.status = 'published'
-          this.loading = false
+          alert(this.isEdit)
+          if (!this.isEdit) {
+            addUser(this.postForm).then(response => {
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.loading = false
+              // Set tagsview title
+            }).catch(err => {
+              console.log(err)
+            })
+          } else {
+            editUser(this.postForm).then(response => {
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.loading = false
+              // Set tagsview title
+            }).catch(err => {
+              console.log(err)
+            })
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -143,9 +169,9 @@ export default {
       })
     },
     draftForm() {
-      if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
+      if (this.postForm.password.length === 0 || this.postForm.username.length === 0) {
         this.$message({
-          message: '请填写必要的标题和内容',
+          message: '请填写必要的信息',
           type: 'warning'
         })
         return
@@ -156,7 +182,6 @@ export default {
         showClose: true,
         duration: 1000
       })
-      this.postForm.status = 'draft'
     }
   }
 }

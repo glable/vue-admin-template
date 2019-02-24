@@ -44,19 +44,24 @@ export const constantRouterMap = [
   {
     path: '/user',
     component: Layout,
+    meta: {
+      title: '用户管理',
+      icon: 'user',
+      roles: ['admin'] // you can set roles in root nav
+    },
     children: [
       {
         path: 'add',
         component: () => import('@/views/user/add'),
         name: 'AddUser',
-        meta: { title: '新增用户', icon: 'edit', noCache: true },
+        meta: { title: '新增用户', icon: 'edit', noCache: true, roles: ['admin'] },
         hidden: true
       },
       {
-        path: 'edit/:username(\\d+)',
+        path: 'edit/:username(\\S+)',
         component: () => import('@/views/user/edit'),
         name: 'EditUser',
-        meta: { title: '编辑用户', noCache: true },
+        meta: { title: '编辑用户', noCache: true, roles: ['admin'] },
         hidden: true
       },
       {

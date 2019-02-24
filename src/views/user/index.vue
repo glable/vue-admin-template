@@ -1,6 +1,13 @@
 <template>
   <div class="app-container">
     <div class="filter-container" style="margin-bottom:5px;">
+      <span>用户名:</span>
+      <el-input
+        v-model="listQuery.username"
+        style="width: 150px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
       <el-button
         :loading="listLoading"
         class="filter-item"
@@ -8,6 +15,9 @@
         icon="el-icon-search"
         @click="handleFilter"
       >{{ '查询' }}</el-button>
+      <router-link :to="'/user/add/'" style="float:right;margin-right:30px;">
+        <el-button type="primary" size="small" icon="el-icon-plus">新增</el-button>
+      </router-link>
     </div>
     <el-table
       v-loading="listLoading"
@@ -27,12 +37,12 @@
           <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="语音验证码ID" width="600">
+      <el-table-column align="center" label="语音验证码ID" width="400">
         <template slot-scope="scope">
           <span>{{ scope.row.yzmid }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="通知话单ID" width="600">
+      <el-table-column align="center" label="通知话单ID" width="400">
         <template slot-scope="scope">
           <span>{{ scope.row.hdid }}</span>
         </template>
@@ -42,9 +52,12 @@
           <router-link :to="'/user/edit/'+scope.row.username">
             <el-button type="primary" size="small" icon="el-icon-edit">编辑</el-button>
           </router-link>
-          <router-link :to="'/user/delete/'+scope.row.username">
-            <el-button type="primary" size="small" icon="el-icon-delete">删除</el-button>
-          </router-link>
+          <el-button
+            type="primary"
+            size="small"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row.username)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,6 +74,7 @@
 
 <script>
 import { fetchList } from '@/api/user'
+import { deleteUser } from '@/api/user'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -104,6 +118,27 @@ export default {
     handleFilter() {
       this.listQuery.pageNum = 1
       this.getList()
+    },
+    handleDelete(username) {
+      if (username == 'admin') {
+        this.$message({
+          message: '管理员账户【admin】不能删除！',
+          type: 'error'
+        })
+        return
+      } else {
+        deleteUser(username).then(response => {
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.getList()
+          this.listLoading = false
+        })
+      }
+
     },
     handleSizeChange(val) {
       this.listQuery.pageSize = val

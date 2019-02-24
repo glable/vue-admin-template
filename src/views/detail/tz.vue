@@ -162,7 +162,7 @@ export default {
         caller: '',
         called: '',
         durationConditon: '',
-        startTime: parseTime(Date.now()-7*24*60*60*1000, '{y}{m}{d}'),
+        startTime: parseTime(Date.now() - 7 * 24 * 60 * 60 * 1000, '{y}{m}{d}'),
         endTime: parseTime(Date.now(), '{y}{m}{d}')
       },
       pickerOptions0: {

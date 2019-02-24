@@ -6,7 +6,7 @@
 import UserDetail from './components/Detail'
 
 export default {
-  name: 'EditForm',
+  name: 'PostForm',
   components: { UserDetail }
 }
 </script>
